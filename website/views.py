@@ -35,7 +35,7 @@ def add():
         db.session.add(new_book)
         db.session.commit()
 
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.search'))
     return render_template("add.html", user=current_user)
 @views.route('/profile',methods=['GET'])
 @login_required
