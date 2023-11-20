@@ -84,36 +84,27 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
                 </li>
-                
+
             </ul>
             <a class="btn btn-outline-success my-2 my-sm-0" href="/logout">Logout</a>
         </div>
     </nav>
     <div class="content-box">
-        {% if user_names %}
-            {% for i in range(user_names|length - 1, -1, -1) %}
+        {% if user_names_sent %}
+            {% for i in range(user_names_sent|length - 1, -1, -1) %}
                 <div class="request-box">
                     <div>
-                        <p>User: {{ user_names[i] }}</p>
-                        <p>Book: {{ book_names[i] }}</p>
-                        <p>Message: {{ messages[i] }}</p>
+                        <p>User: {{ user_names_sent[i] }}</p>
+                        <p>Book: {{ book_names_sent[i] }}</p>
+                        <p>Message: {{ messages_sent[i] }}</p>
                     </div>
                     <div class="button-group">
-                        {% if status[i] == 'Pending' %}
-                            <form method="post" action="/approve_request/{{ transaction_ids[i] }}">
-                                <button type="submit" class="btn btn-success">Approve</button>
-                            </form>
-                            <form method="post" action="/reject_request/{{ transaction_ids[i] }}">
-                                <button type="submit" class="btn btn-danger">Reject</button>
-                            </form>
-                        {% else %}
-                            <p>Status: {{ status[i] }}</p>
-                        {% endif %}
+                        <p>Status: {{ status_sent[i] }}</p>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>No requests found.</p>
+            <p>No sent requests found.</p>
         {% endif %}
     </div>
 </body>

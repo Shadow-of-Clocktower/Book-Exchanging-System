@@ -86,10 +86,34 @@ def requests():
     user_names=[]
     messages=[]
     status=[]
+    transaction_ids=[]
     for transaction in transactions:
         book_names.append(Book.query.filter_by(id=transaction.book_id).first().bookname)
         user_names.append(User.query.filter_by(id=transaction.from_id).first().username)
         messages.append(transaction.message)
         status.append(transaction.status)
+        transaction_ids.append(transaction.id)
 
-    return render_template("requests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status)
+    return render_template("requests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids)
+
+@views.route('/approve_request/<p1>',methods=['GET','POST'])
+@login_required
+def approve_request(p1):
+    if request.method == 'POST':
+        transaction = Transaction.query.filter_by(id=p1).first()
+        transaction.status = 'Approved'
+        db.session.commit()
+
+        return redirect(url_for('views.requests'))
+    return render_template("requests.html")
+
+@views.route('/reject_request/<p1>',methods=['GET','POST'])
+@login_required
+def reject_request(p1):
+    if request.method == 'POST':
+        transaction = Transaction.query.filter_by(id=p1).first()
+        transaction.status = 'Rejected'
+        db.session.commit()
+
+        return redirect(url_for('views.requests'))
+    return render_template("requests.html")
