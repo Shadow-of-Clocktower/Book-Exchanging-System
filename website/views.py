@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for,jsonify
-from .models import Book,User
+from .models import Book,User,Transaction
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -19,6 +19,7 @@ def search():
         return render_template("search.html",books=books,users=users)
         
     return render_template("search.html")
+
 
 
 
@@ -59,4 +60,18 @@ def getValue():
     }
     return jsonify(res)
 
+@views.route('/requestBook/<p1>/<p2>',methods=['GET','POST'])
+@login_required
+def requestBook(p1, p2):
+    if request.method == 'POST':
+        from_id = current_user.id
+        book_id = p1
+        to_id = p2
+        message = request.form.get('message')
+        new_transaction = Transaction(from_id=from_id, to_id=to_id, book_id=book_id, status='Pending', message=message)
+        db.session.add(new_transaction)
+        db.session.commit()
+
+        return redirect(url_for('views.search'))
+    return render_template("request.html")
 

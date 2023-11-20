@@ -29,6 +29,7 @@ class Transaction(db.Model):
     to_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     status = db.Column(db.String(40))
+    message = db.Column(db.String(100))
 
     from_user = db.relationship('User', foreign_keys=[from_id], backref='sent_transactions', lazy=True)
     to_user = db.relationship('User', foreign_keys=[to_id], backref='received_transactions', lazy=True)
