@@ -68,10 +68,11 @@ def requestBook(p1, p2):
         from_id = current_user.id
         book_id = p1
         to_id = p2
-        message = request.form.get('message')
+        message = request.form.get('request_message')
         new_transaction = Transaction(from_id=from_id, to_id=to_id, book_id=book_id, status='Pending', message=message)
         db.session.add(new_transaction)
         db.session.commit()
+        print(message)
 
         return redirect(url_for('views.search'))
     return render_template("request.html")
@@ -134,5 +135,6 @@ def myrequests():
         messages.append(transaction.message)
         status.append(transaction.status)
         transaction_ids.append(transaction.id)
+    print(messages)
 
     return render_template("myrequests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids)
