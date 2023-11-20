@@ -15,7 +15,9 @@ def search():
     users = User.query
     book = request.args.get('bookname')
     if book:
-        books=Book.query.filter(Book.bookname.like('%'+book+'%')).all()
+        # get books like bookname that are not owned by current user
+        books = Book.query.filter(Book.bookname.like(f'%{book}%'), Book.user_id != current_user.id)
+
         return render_template("search.html",books=books,users=users)
         
     return render_template("search.html")
@@ -26,7 +28,6 @@ def search():
 @views.route('/add',methods=['GET','POST'])
 @login_required
 def add():
-    print(current_user)
     if request.method=="POST":       
         bookname=request.form.get('bookname')
         authorname=request.form.get('authorname')
@@ -75,3 +76,20 @@ def requestBook(p1, p2):
         return redirect(url_for('views.search'))
     return render_template("request.html")
 
+
+@views.route('/requests',methods=['GET'])
+@login_required
+def requests():
+    transactions = Transaction.query.filter_by(to_id=current_user.id)
+    # return book info and requested person info via jinjua
+    book_names=[]
+    user_names=[]
+    messages=[]
+    status=[]
+    for transaction in transactions:
+        book_names.append(Book.query.filter_by(id=transaction.book_id).first().bookname)
+        user_names.append(User.query.filter_by(id=transaction.from_id).first().username)
+        messages.append(transaction.message)
+        status.append(transaction.status)
+
+    return render_template("requests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status)
