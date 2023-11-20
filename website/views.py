@@ -117,3 +117,22 @@ def reject_request(p1):
 
         return redirect(url_for('views.requests'))
     return render_template("requests.html")
+
+@views.route('/myrequests',methods=['GET'])
+@login_required
+def myrequests():
+    transactions = Transaction.query.filter_by(from_id=current_user.id)
+    # return book info and requested person info via jinjua
+    book_names=[]
+    user_names=[]
+    messages=[]
+    status=[]
+    transaction_ids=[]
+    for transaction in transactions:
+        book_names.append(Book.query.filter_by(id=transaction.book_id).first().bookname)
+        user_names.append(User.query.filter_by(id=transaction.to_id).first().username)
+        messages.append(transaction.message)
+        status.append(transaction.status)
+        transaction_ids.append(transaction.id)
+
+    return render_template("myrequests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids)

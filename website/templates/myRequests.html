@@ -10,61 +10,62 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <title>Book Swapper - My Requests</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
-        body {
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins';
-            background: linear-gradient(135deg, #ffffff, #ffffff);
-        }
+    body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Poppins';
+        background: linear-gradient(135deg, #ffffff, #ffffff);
+    }
 
-        .navbar {
-            padding: 5px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .navbar {
+        padding: 5px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
 
-        .nav-item {
-            padding: 2.5px;
-        }
+    .nav-item {
+        padding: 2.5px;
+    }
 
-        .content-box {
-            width: 60%;
-            height: 20%;
-            background: #ffffff;
-            color: #020202;
-            margin-top: 10%;
-            margin-left: 50%;
-            transform: translate(-50%, -50%);
-            box-sizing: border-box;
-            padding: 40px 30px;
-            border: 3px solid black;
-            border-radius: 15px;
-        }
+    .content-box {
+        width: 60%;
+        height: 20%;
+        background: #ffffff;
+        color: #020202;
+        margin-top: 15%; /* Adjusted margin-top value */
+        margin-left: 50%;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        padding: 40px 30px;
+        border: 3px solid black;
+        border-radius: 15px;
+    }
 
-        .content-box input,
-        .content-box textarea {
-            width: inherit;
-            margin-bottom: 20px;
-        }
+    .content-box input,
+    .content-box textarea {
+        width: inherit;
+        margin-bottom: 20px;
+    }
 
-        .request-box {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-        }
+    .request-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+    .button-group {
+        display: flex;
+        gap: 10px;
+    }
+</style>
+
 </head>
 
 <body>
@@ -90,16 +91,16 @@
         </div>
     </nav>
     <div class="content-box">
-        {% if user_names_sent %}
-            {% for i in range(user_names_sent|length - 1, -1, -1) %}
+        {% if user_names %}
+            {% for i in range(user_names|length - 1, -1, -1) %}
                 <div class="request-box">
                     <div>
-                        <p>User: {{ user_names_sent[i] }}</p>
-                        <p>Book: {{ book_names_sent[i] }}</p>
-                        <p>Message: {{ messages_sent[i] }}</p>
+                        <p>User: {{ user_names[i] }}</p>
+                        <p>Book: {{ book_names[i] }}</p>
+                        <p>Message: {{ messages[i] }}</p>
                     </div>
                     <div class="button-group">
-                        <p>Status: {{ status_sent[i] }}</p>
+                        <p>Status: {{ status[i] }}</p>
                     </div>
                 </div>
             {% endfor %}
