@@ -82,20 +82,28 @@ def requestBook(p1, p2):
 @login_required
 def requests():
     transactions = Transaction.query.filter_by(to_id=current_user.id)
-    # return book info and requested person info via jinjua
+    # return book info and requested person info via jinja
     book_names=[]
     user_names=[]
     messages=[]
     status=[]
     transaction_ids=[]
+    emails=[]
+    phonenumbers=[]
     for transaction in transactions:
         book_names.append(Book.query.filter_by(id=transaction.book_id).first().bookname)
         user_names.append(User.query.filter_by(id=transaction.from_id).first().username)
         messages.append(transaction.message)
         status.append(transaction.status)
         transaction_ids.append(transaction.id)
+        if(transaction.status!="Approved"):
+            emails.append("Hidden!!")
+            phonenumbers.append("Hidden!!")
+        else:
+            emails.append(User.query.filter_by(id=transaction.from_id).first().email)
+            phonenumbers.append(User.query.filter_by(id=transaction.from_id).first().phonenumber)
 
-    return render_template("requests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids)
+    return render_template("requests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids,emails=emails,phonenumbers=phonenumbers)
 
 @views.route('/approve_request/<p1>',methods=['GET','POST'])
 @login_required
@@ -123,18 +131,25 @@ def reject_request(p1):
 @login_required
 def myrequests():
     transactions = Transaction.query.filter_by(from_id=current_user.id)
-    # return book info and requested person info via jinjua
+    # return book info and requested person info via jinja
     book_names=[]
     user_names=[]
     messages=[]
     status=[]
     transaction_ids=[]
+    emails = []
+    phonenumbers =[]
     for transaction in transactions:
         book_names.append(Book.query.filter_by(id=transaction.book_id).first().bookname)
         user_names.append(User.query.filter_by(id=transaction.to_id).first().username)
         messages.append(transaction.message)
         status.append(transaction.status)
         transaction_ids.append(transaction.id)
-    print(messages)
+        if(transaction.status!="Approved"):
+            emails.append("Hidden!!")
+            phonenumbers.append("Hidden!!")
+        else:
+            emails.append(User.query.filter_by(id=transaction.from_id).first().email)
+            phonenumbers.append(User.query.filter_by(id=transaction.from_id).first().phonenumber)
 
-    return render_template("myrequests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids)
+    return render_template("myrequests.html", transactions=transactions, book_names=book_names, user_names=user_names, messages=messages, status=status, transaction_ids=transaction_ids,emails=emails,phonenumbers=phonenumbers)

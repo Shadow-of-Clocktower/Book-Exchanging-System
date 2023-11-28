@@ -36,7 +36,7 @@
             height: 20%;
             background: #ffffff;
             color: #020202;
-            margin-top: 5%;
+            margin-top: 20%;
             margin-left: 50%;
             transform: translate(-50%, -50%);
             box-sizing: border-box;
@@ -104,6 +104,8 @@
                         <p>User: {{ user_names[i] }}</p>
                         <p>Book: {{ book_names[i] }}</p>
                         <p>Message: {{ messages[i] }}</p>
+                        <p>Email: {{ emails[i] }}</p>
+                        <p>PhoneNumber: {{ phonenumbers[i] }}</p>
                     </div>
                     <div class="button-group">
                         {% if status[i] == 'Pending' %}
